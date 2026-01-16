@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AD-SITE — Custom Ad Production</title>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --orange: #FF6B35;
+            --purple: #9D4EDD;
+            --yellow: #FFBE0B;
+            --pink: #FF006E;
+            --cream: #F5F5F5;
+            --dark: #1A1A1A;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Clash Display', sans-serif;
+            background: var(--cream);
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.3;
+        }
+
+        /* ANIMATED BACKGROUND CHAOS */
+        .bg-chaos {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .chaos-blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.08;
+            animation: blobDrift 15s ease-in-out infinite;
+            mix-blend-mode: multiply;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--orange);
+            top: -10%;
+            left: -5%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--purple);
+            top: 20%;
+            right: -8%;
+            animation-delay: 2s;
+        }
+
+        .blob-3 {
+            width: 350px;
+            height: 350px;
+            background: var(--pink);
+            bottom: 5%;
+            left: 10%;
+            animation-delay: 4s;
+        }
+
+        .blob-4 {
+            width: 280px;
+            height: 280px;
+            background: var(--yellow);
+            bottom: -10%;
+            right: 5%;
+            animation-delay: 1s;
+        }
+
+        @keyframes blobDrift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -50px) rotate(90deg); }
+            50% { transform: translate(-20px, 40px) rotate(180deg); }
+            75% { transform: translate(50px, 20px) rotate(270deg); }
+        }
+
+        /* CONTAINER */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* HEADER - TRANSPARENT & FULL WIDTH */
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(245, 245, 245, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px dashed var(--dark);
+            transform: skewY(-1deg);
+            width: 100%;
+        }
+
+        header > * {
+            position: relative;
+        }
+
+        header .logo {
+            position: absolute;
+            left: 30px;
+        }
+
+        header nav {
+            margin-left: auto;
+            margin-right: 30px;
+        }
+
+
+Also need to add top padding to hero to account for fixed header:
+
+        /* HERO - INSANELY BOLD */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            padding: 80px 0;
+            margin-top: 120px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--dark);
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--orange), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { filter: drop-shadow(2px 2px 0px var(--yellow)); }
+            50% { filter: drop-shadow(4px 4px 0px var(--orange)); }
+        }
+
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            margin-left: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--orange);
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        nav a:hover {
+            color: var(--orange);
+            transform: skewX(-5deg);
+        }
+
+        nav a:hover::before {
+            width: 100%;
+        }
+
+        /* HERO - INSANELY BOLD */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            padding: 80px 0;
+            margin-top: 40px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 14vw, 180px);
+            line-height: 1.05;
+            margin-bottom: 20px;
+            letter-spacing: -4px;
+            font-weight: 700;
+            color: var(--dark);
+            text-transform: uppercase;
+            word-spacing: 100vw;
+            animation: heroShake 0.3s ease infinite;
+        }
+
+        @keyframes heroShake {
+            0%, 100% { transform: skewY(-1deg) rotateZ(0deg); }
+            25% { transform: skewY(1deg) rotateZ(0.5deg); }
+            50% { transform: skewY(-1deg) rotateZ(-0.5deg); }
+            75% { transform: skewY(1deg) rotateZ(0deg); }
+        }
+
+        .hero-word-1 { color: var(--orange); }
+        .hero-word-2 { color: var(--purple); }
+        .hero-word-3 { color: var(--pink); }
+
+        .hero-subline {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 60px;
+            font-weight: 400;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        .highlight-yellow {
+            background: var(--yellow);
+            padding: 8px 16px;
+            border: 3px solid var(--dark);
+            display: inline-block;
+            transform: rotate(-2deg);
+            font-weight: 700;
+        }
+
+        .highlight-orange {
+            color: var(--orange);
+            font-weight: 700;
+            text-decoration: underline wavy 3px var(--orange);
+        }
+
+        .cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 22px 60px;
+            background: linear-gradient(135deg, var(--orange), var(--pink));
+            color: var(--cream);
+            border: 4px solid var(--dark);
+            border-radius: 0px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Space Mono', monospace;
+            transform: rotate(-1deg);
+            box-shadow: 8px 8px 0px var(--dark);
+        }
+
+        .cta-primary:hover {
+            transform: rotate(1deg) translateY(-8px);
+            box-shadow: 12px 12px 0px var(--dark);
+            background: linear-gradient(135deg, var(--pink), var(--orange));
+        }
+
+        .cta-primary:active {
+            transform: rotate(-1deg) translateY(-2px);
+            box-shadow: 4px 4px 0px var(--dark);
+        }
+
+        /* WHAT WE DO - ASYMMETRICAL GRID */
+        .what-we-do {
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 100px;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+            letter-spacing: -3px;
+            text-transform: uppercase;
+            color: var(--dark);
+        }
+
+        .section-title .line {
+            display: inline;
+            color: var(--orange);
+            border-bottom: 5px solid var(--purple);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 60px;
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .card {
+            background: var(--cream);
+            border: 4px solid var(--dark);
+            border-radius: 0px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: rotate(calc(var(--rotation) * 1deg));
+        }
+
+        .card:nth-child(1) { --rotation: -3; border-color: var(--orange); border-width: 5px; }
+        .card:nth-child(2) { --rotation: 2; border-color: var(--purple); border-width: 4px; }
+        .card:nth-child(3) { --rotation: -2; border-color: var(--pink); border-width: 5px; }
+        .card:nth-child(4) { --rotation: 3; border-color: var(--yellow); border-width: 4px; }
+        .card:nth-child(5) { --rotation: -1; border-color: var(--orange); border-width: 5px; }
+        .card:nth-child(6) { --rotation: 2; border-color: var(--purple); border-width: 4px; }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(157, 78, 221, 0.1));
+            transition: top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            top: 0;
+        }
+
+        .card:hover {
+            transform: rotate(0deg) translateY(-15px) scale(1.08);
+            box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-icon {
+            font-size: 52px;
+            margin-bottom: 20px;
+            animation: iconBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            color: var(--dark);
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* HOW IT WORKS - DIAGONAL CHAOS */
+        .how-it-works {
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 50px;
+            margin-top: 80px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .flow-container::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: repeating-linear-gradient(90deg, var(--orange) 0px, var(--orange) 20px, transparent 20px, transparent 40px);
+            z-index: 0;
+        }
+
+        .flow-step {
+            flex: 1;
+            min-width: 220px;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+            transform: skewX(-3deg);
+        }
+
+        .step-number {
+            width: 90px;
+            height: 90px;
+            border: 4px solid var(--dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0 0 30px 0;
+            color: var(--dark);
+            background: var(--yellow);
+            box-shadow: 8px 8px 0px var(--dark);
+            animation: numberSpin 3s ease-in-out infinite;
+        }
+
+        @keyframes numberSpin {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(360deg); }
+        }
+
+        .flow-arrow {
+            font-size: 52px;
+            color: var(--pink);
+            animation: arrowGlitch 0.4s ease-in-out infinite;
+            transform: scaleX(-1);
+        }
+
+        @keyframes arrowGlitch {
+            0%, 100% { transform: scaleX(-1) translateX(0); }
+            50% { transform: scaleX(-1) translateX(15px); }
+        }
+
+        .flow-step h3 {
+            font-size: 20px;
+            margin: 20px 0 15px;
+            color: var(--dark);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .flow-step p {
+            font-size: 13px;
+            color: var(--dark);
+            line-height: 1.6;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* CASE STUDIES - BOLD SCATTERED */
+        .case-studies {
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 70px;
+            margin-top: 80px;
+        }
+
+        .study-card {
+            background: var(--cream);
+            border: 5px solid var(--dark);
+            border-radius: 0px;
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: rotate(calc(var(--card-rotation) * 1deg)) skewY(calc(var(--card-skew) * 1deg));
+        }
+
+        .study-card:nth-child(1) { --card-rotation: 4; --card-skew: 2; background: rgba(255, 107, 53, 0.15); }
+        .study-card:nth-child(2) { --card-rotation: -3; --card-skew: -1; background: rgba(157, 78, 221, 0.15); }
+        .study-card:nth-child(3) { --card-rotation: 5; --card-skew: 2; background: rgba(255, 0, 110, 0.15); }
+        .study-card:nth-child(4) { --card-rotation: -2; --card-skew: 1; background: rgba(255, 190, 11, 0.15); }
+        .study-card:nth-child(5) { --card-rotation: 3; --card-skew: -2; background: rgba(255, 107, 53, 0.15); }
+        .study-card:nth-child(6) { --card-rotation: -4; --card-skew: 1; background: rgba(157, 78, 221, 0.15); }
+
+        .study-card:hover {
+            transform: rotate(0deg) skewY(0deg) translateY(-20px) scale(1.1);
+            box-shadow: 20px 20px 0px var(--dark);
+        }
+
+        .study-metric {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--orange), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .study-label {
+            font-size: 12px;
+            color: var(--dark);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            border-bottom: 3px dashed var(--dark);
+            padding-bottom: 15px;
+        }
+
+        .study-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--dark);
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* CTA SECTION - EXPLOSION */
+        .cta-section {
+            padding: 120px 40px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--purple) 25%, var(--pink) 50%, var(--yellow) 75%, var(--orange) 100%);
+            border: 6px solid var(--dark);
+            margin: 150px 0;
+            transform: skewY(-3deg) rotate(-1deg);
+            box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-section h2 {
+            font-size: 64px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: -2px;
+            color: var(--cream);
+            text-transform: uppercase;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(245, 245, 245, 0.95);
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 80px 0;
+            border-top: 5px dashed var(--dark);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            transform: skewY(1deg);
+        }
+
+        footer p {
+            color: var(--dark);
+            font-size: 13px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        footer a {
+            color: var(--orange);
+            text-decoration: underline wavy 2px var(--orange);
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--pink);
+            text-decoration-color: var(--pink);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .flow-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .flow-container::before {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 30px;
+                transform: skewY(0deg);
+            }
+
+            .studies-grid {
+                gap: 40px;
+            }
+
+            .cta-section {
+                padding: 80px 20px;
+                transform: skewY(0deg) rotate(0deg);
+            }
+        }
+
+        /* GLITCH TEXT EFFECT */
+        .glitch {
+            position: relative;
+            animation: glitchText 0.2s ease-in-out infinite;
+        }
+
+        @keyframes glitchText {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-chaos">
+        <div class="chaos-blob blob-1"></div>
+        <div class="chaos-blob blob-2"></div>
+        <div class="chaos-blob blob-3"></div>
+        <div class="chaos-blob blob-4"></div>
+    </div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo">AD-SITE</div>
+            <nav>
+                <a href="#what-we-do">What We Do</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#case-studies">Proof</a>
+                <a href="#contact">Go Crazy</a>
+            </nav>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>
+                    <span class="hero-word-1">We Don't</span>
+                    <span class="hero-word-2">Generate Ads.</span>
+                    <span class="hero-word-3">We Craft Them.</span>
+                </h1>
+                <p class="hero-subline">
+                    Custom video production for <span class="highlight-orange">brands that refuse to blend in</span>.
+                </p>
+                <p class="hero-subline" style="color: var(--purple);">
+                    Long-form · Instagram · YouTube · Facebook · <span class="highlight-yellow">Pure conversion machines</span>
+                </p>
+                <button class="cta-primary">
+                    💬 Consult Your Next Ad
+                </button>
+            </div>
+        </section>
+
+        <!-- WHAT WE DO -->
+        <section class="what-we-do" id="what-we-do">
+            <h2 class="section-title">
+                What We <span class="section-title line">Create</span>
+            </h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🎬</div>
+                    <h3>Long-Form Video</h3>
+                    <p>3-10 minute storytelling. Brand origin, founder story, customer testimonials that convert.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📱</div>
+                    <h3>Instagram Reels</h3>
+                    <p>15-60 sec viral content. Trends + product. Designed for scrollers who become buyers.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">▶️</div>
+                    <h3>YouTube Ads</h3>
+                    <p>6-15 sec skippable & non-skippable. Built for performance. Built for ROI.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📲</div>
+                    <h3>Facebook Video</h3>
+                    <p>Carousel ads, collection ads, retargeting. 15-30 sec conversion machines.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Brand Strategy</h3>
+                    <p>We don't just film. We analyze your positioning, messaging, differentiation. Then weaponize it.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>Proven Results</h3>
+                    <p>Every ad we make tracks metrics. CTR. CAC. ROAS. We obsess over your conversion data.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="how-it-works" id="how-it-works">
+            <h2 class="section-title">
+                Our <span class="section-title line">Process</span>
+            </h2>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <h3>Discovery Call</h3>
+                    <p>Deep dive. Your product story, competitors, audience, campaign goal. We ask the hard questions.</p>
+                </div>
+                <div class="flow-arrow">←</div>
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <h3>Creative Strategy</h3>
+                    <p>We craft messaging. Define your angle. Script, storyboard, creative direction. Custom to you.</p>
+                </div>
+                <div class="flow-arrow">←</div>
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <h3>Production & Edit</h3>
+                    <p>We film, animate, edit. Multi-platform versions. Long-form + shorts + platform-specific cuts.</p>
+                </div>
+                <div class="flow-arrow">←</div>
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <h3>Launch & Optimize</h3>
+                    <p>Your ads go live. We track metrics. Suggest optimizations. Your success is our obsession.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASE STUDIES -->
+        <section class="case-studies" id="case-studies">
+            <h2 class="section-title">
+                Our <span class="section-title line">Portfolio</span>
+            </h2>
+            <div class="studies-grid">
+                <div class="study-card">
+                    <div class="study-metric">+412%</div>
+                    <div class="study-label">Fashion E-Commerce</div>
+                    <div class="study-description">3-part video series: origin story + product + testimonials. Long-form + Instagram + YouTube. Result: $2.8M first month.</div>
+                </div>
+                <div class="study-card">
+                    <div class="study-metric">+245%</div>
+                    <div class="study-label">SaaS Startup</div>
+                    <div class="study-description">Animated explainer (long-form) + 15-sec YouTube skippable + Instagram carousel. Signups +245%. CAC: $8 vs $24 industry.</div>
+                </div>
+                <div class="study-card">
+                    <div class="study-metric">5.2x</div>
+                    <div class="study-label">DTC Beauty</div>
+                    <div class="study-description">Lifestyle reels strategy: founder story + ingredient education + Instagram reels. ROAS 5.2x. CPA down 73%.</div>
+                </div>
+                <div class="study-card">
+                    <div class="study-metric">7.8x</div>
+                    <div class="study-label">Fitness Supplements</div>
+                    <div class="study-description">6-sec YouTube non-skippable + Facebook carousel + testimonial long-form. ROAS 7.8x. Industry average: 2x.</div>
+                </div>
+                <div class="study-card">
+                    <div class="study-metric">+320%</div>
+                    <div class="study-label">Real Estate Platform</div>
+                    <div class="study-description">Platform demo (long-form) + property showcase loops (Instagram/Facebook). Listings +156%. Inquiries +320%.</div>
+                </div>
+                <div class="study-card">
+                    <div class="study-metric">+189%</div>
+                    <div class="study-label">E-Learning Course</div>
+                    <div class="study-description">Student success videos (3-5 min) + testimonial reels (Instagram) + YouTube ads. Conversion +189%. CAC down from $18 to $4.2.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section class="cta-section" id="contact">
+            <h2>Your Brand Deserves Better Than Templates.</h2>
+            <p>Let's create custom ads that actually convert. Book a consultation.</p>
+            <button class="cta-primary">
+                📞 Book a Free Strategy Call
+            </button>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>© 2026 AD-SITE. Custom video production for brands that refuse to disappear. <a href="#">Instagram</a> · <a href="#">Portfolio</a> · <a href="#">Contact</a> · <a href="#">Work With Us</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // SMOOTH SCROLL NAV
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // RANDOM CARD ROTATIONS ON SCROLL
+        const cards = document.querySelectorAll('.card, .study-card');
+        window.addEventListener('scroll', () => {
+            cards.forEach((card, index) => {
+                const rect = card.getBoundingClientRect();
+                const scrolled = window.pageYOffset;
+                const cardPosition = scrolled + rect.top;
+                const windowCenter = window.innerHeight / 2 + scrolled;
+                const offset = (cardPosition - windowCenter) * 0.03;
+                card.style.transform = `rotate(calc(var(--rotation, 0) * 1deg + ${offset}px)) translateY(${offset * 0.5}px)`;
+            });
+        });
+
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-title, .card, .study-card, .flow-step').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ADD FADE IN UP ANIMATION
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // BUTTON CHAOS
+        document.querySelectorAll('.cta-primary').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'rotate(-3deg) translateY(-12px) skewX(-2deg)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'rotate(-1deg)';
+            });
+        });
+
+        // RANDOM SKEW ON HERO TEXT
+        const heroH1 = document.querySelector('.hero h1');
+        setInterval(() => {
+            const randomSkew = (Math.random() - 0.5) * 2;
+            heroH1.style.skewY = `${randomSkew}deg`;
+        }, 200);
+
+        // CONSOLE MADNESS
+        console.log('%c🔥 AD-SITE: CUSTOM AD PRODUCTION', 'font-size: 24px; color: #FF6B35; font-weight: bold; text-shadow: 2px 2px 0px #9D4EDD;');
+        console.log('%cWe craft. We don\'t generate.', 'color: #FF006E; font-size: 16px; font-weight: bold;');
+        console.log('%cBuilt for brands that matter.', 'color: #FFBE0B; font-size: 13px;');
+    </script>
+</body>
+</html>
